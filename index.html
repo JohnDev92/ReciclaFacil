@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ReciclaFácil - Santa Cruz da Serra</title>
     <meta charset="utf-8" />
@@ -10,196 +11,331 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
 
     <style>
-        body { margin:0; padding:0; font-family: Arial, sans-serif; }
-        #container { display:flex; height:100vh; flex-direction:column; }
-        #map { flex:1; padding-bottom:100px; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #map {
+            flex: 1;
+            padding-bottom: 100px;
+        }
+
         #form-container {
-            display:none;
-            position:absolute; top:10px; left:10px; right:10px;
-            background:white; padding:10px; border-radius:8px;
-            box-shadow:0px 2px 6px rgba(0,0,0,0.3); z-index:1000;
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
         }
-        #form-container input[type="text"]{ width:60%; padding:5px; border-radius:3px; border:1px solid #ccc; }
-        #form-container button{ padding:5px 10px; border-radius:3px; cursor:pointer; margin-left:5px; }
-        #sidebar{
-            position:absolute; top:0; right:-300px; width:300px; height:100%;
-            background:#f0f0f0; overflow-y:auto; transition:right 0.3s ease; z-index:900; padding:10px;
-            box-shadow:-2px 0 6px rgba(0,0,0,0.2);
+
+        #form-container input[type="text"] {
+            width: 60%;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
         }
-        #sidebar.active{ right:0; }
-        #sidebar h3{ margin-top:0; }
-        #sidebar ul{ list-style:none; padding-left:0; }
-        #sidebar li{ padding:5px; border-bottom:1px solid #ccc; display:flex; justify-content:space-between; align-items:center; }
-        #sidebar li span{ cursor:pointer; margin-left:10px; }
-        #sidebar li span.excluir{ color:red; }
-        #control-bar{
-            position:absolute; bottom:16px; left:16px; right:16px;
-            background:rgba(255,255,255,0.95); padding:12px; border-radius:8px;
-            box-shadow:0 -2px 10px rgba(0,0,0,0.15); z-index:1001;
-            display:flex; justify-content:space-between; align-items:center; gap:12px;
+
+        #form-container button {
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 5px;
         }
-        #contact-buttons, #map-controls{ display:flex; gap:8px; }
-        .btn-contact, .btn-control{
-            padding:10px 16px; border:none; border-radius:5px; 
-            cursor:pointer; font-size:14px; font-weight:500;
-            transition:all 0.2s; text-decoration:none; display:inline-block;
+
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: #f0f0f0;
+            overflow-y: auto;
+            transition: right 0.3s ease;
+            z-index: 900;
+            padding: 10px;
+            box-shadow: -2px 0 6px rgba(0, 0, 0, 0.2);
         }
-        .btn-whatsapp{ background:#25D366; color:white; }
-        .btn-whatsapp:hover{ background:#20BA5A; }
-        .btn-phone{ background:#2196F3; color:white; }
-        .btn-phone:hover{ background:#1976D2; }
-        .btn-control{ background:#4CAF50; color:white; }
-        .btn-control:hover{ background:#45a049; }
-        @media(max-width:768px){ 
-            #control-bar{ flex-direction:column; align-items:stretch; }
-            #contact-buttons, #map-controls{ flex-direction:column; width:100%; }
-            .btn-contact, .btn-control{ width:100%; text-align:center; }
+
+        #sidebar.active {
+            right: 0;
         }
-        @media(max-width:600px){ #sidebar{ width:200px; } #form-container input[type="text"]{ width:55%; } }
+
+        #sidebar h3 {
+            margin-top: 0;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #sidebar li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #sidebar li span {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        #sidebar li span.excluir {
+            color: red;
+        }
+
+        #control-bar {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #contact-buttons,
+        #map-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-contact,
+        .btn-control {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #20BA5A;
+        }
+
+        .btn-phone {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-phone:hover {
+            background: #1976D2;
+        }
+
+        .btn-control {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-control:hover {
+            background: #45a049;
+        }
+
+        @media(max-width:768px) {
+            #control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #contact-buttons,
+            #map-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-contact,
+            .btn-control {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media(max-width:600px) {
+            #sidebar {
+                width: 200px;
+            }
+
+            #form-container input[type="text"] {
+                width: 55%;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<div id="container">
-    <div id="map"></div>
+    <div id="container">
+        <div id="map"></div>
 
-    <div id="form-container">
-        <label>Nome do Ponto:</label>
-        <input type="text" id="nome" placeholder="Ex: Ponto D">
-        <button onclick="adicionarMarcador()">Adicionar</button>
-        <button onclick="fecharFormulario()">Cancelar</button>
-    </div>
-
-    <div id="sidebar">
-        <h3>ReciclaFácil - Pontos de Coleta</h3>
-        <ul id="ul-pontos"></ul>
-    </div>
-
-    <div id="control-bar">
-        <div id="contact-buttons">
-            <a href="https://wa.me/5521990191331" target="_blank" class="btn-contact btn-whatsapp" aria-label="WhatsApp Disk Entulho">
-                📱 WhatsApp - Disk Entulho
-            </a>
-            <a href="tel:+552139001651" class="btn-contact btn-phone" aria-label="Ligue para Prefeitura">
-                📞 Prefeitura (seg-sex 8h-17h)
-            </a>
+        <div id="form-container">
+            <label>Nome do Ponto:</label>
+            <input type="text" id="nome" placeholder="Ex: Ponto D">
+            <button onclick="adicionarMarcador()">Adicionar</button>
+            <button onclick="fecharFormulario()">Cancelar</button>
         </div>
-        <div id="map-controls">
-            <button id="toggleLayer" class="btn-control">🗺️ Alternar Camada</button>
-            <button id="toggleSidebar" class="btn-control">📍 Pontos</button>
+
+        <div id="sidebar">
+            <h3>ReciclaFácil - Pontos de Coleta</h3>
+            <ul id="ul-pontos"></ul>
+        </div>
+
+        <div id="control-bar">
+            <div id="contact-buttons">
+                <a href="https://wa.me/5521990191331" target="_blank" class="btn-contact btn-whatsapp"
+                    aria-label="WhatsApp Disk Entulho">
+                    📱 WhatsApp - Disk Entulho
+                </a>
+                <a href="tel:+552139001651" class="btn-contact btn-phone" aria-label="Ligue para Prefeitura">
+                    📞 Prefeitura (seg-sex 8h-17h)
+                </a>
+            </div>
+            <div id="map-controls">
+                <button id="toggleLayer" class="btn-control">🗺️ Alternar Camada</button>
+                <button id="toggleSidebar" class="btn-control">📍 Pontos</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-<script>
-    var map = L.map('map').setView([-22.641560, -43.278042], 17);
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script>
+        var map = L.map('map').setView([-22.641560, -43.278042], 17);
 
-    // Camadas
-    var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',{
-        attribution:'&copy; OpenStreetMap contributors, Humanitarian OSM'
-    });
-    var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
-        attribution:'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, USDA, USGS, AEX, GeoEye',
-        maxZoom:19
-    });
-    streetLayer.addTo(map);
-    var camadaAtual='street';
-
-    document.getElementById('toggleLayer').onclick=function(){
-        if(camadaAtual==='street'){ map.removeLayer(streetLayer); satelliteLayer.addTo(map); camadaAtual='satellite'; }
-        else { map.removeLayer(satelliteLayer); streetLayer.addTo(map); camadaAtual='street'; }
-    }
-
-    var marcadorAtual=null;
-    var markersCluster=L.markerClusterGroup();
-
-    // PONTOS PRÉ-CARREGADOS DE SANTA CRUZ DA SERRA
-    var pontosColeta = [
-      { "nome": "Ponto A", "lat": -22.641560, "lon": -43.278042 },
-      { "nome": "Ponto B", "lat": -22.640240, "lon": -43.275354 },
-      { "nome": "Ponto C", "lat": -22.638923, "lon": -43.272392 },
-      { "nome": "Ponto D", "lat": -22.646208, "lon": -43.272710 }
-    ];
-
-    const BIN_ID="689f65d4ae596e708fcad177";
-    const MASTER_KEY="689f673443b1c97be91f1e5c";
-    const JSON_URL=`https://api.jsonbin.io/v3/b/${BIN_ID}`;
-
-    function atualizarMapa(){
-        markersCluster.clearLayers();
-
-        var recycleIcon = L.icon({ 
-            iconUrl: 'imagens/recycle_icon_28px.png',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
+        // Camadas
+        var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors, Humanitarian OSM'
         });
-
-
-        pontosColeta.forEach(function(ponto,index){
-            var marker = L.marker([ponto.lat, ponto.lon], { icon: recycleIcon })
-                .bindPopup("<b>ReciclaFácil: " + ponto.nome + "</b>");
-            markersCluster.addLayer(marker);
+        var satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, USDA, USGS, AEX, GeoEye',
+            maxZoom: 19
         });
+        streetLayer.addTo(map);
+        var camadaAtual = 'street';
 
-        map.addLayer(markersCluster);
-        atualizarLista();
-    }
-
-    function atualizarLista(){
-        var ul=document.getElementById('ul-pontos'); ul.innerHTML='';
-        pontosColeta.forEach(function(ponto,index){
-            var li=document.createElement('li');
-            li.innerHTML=`<span onclick="zoomParaPonto(${index})">${ponto.nome}</span>
-                          <span class="excluir" onclick="excluirPonto(${index})">✖</span>`;
-            ul.appendChild(li);
-        });
-    }
-
-    function zoomParaPonto(index){
-        map.setView([pontosColeta[index].lat,pontosColeta[index].lon],18);
-        markersCluster.eachLayer(function(marker){ 
-            if(marker.getLatLng().lat===pontosColeta[index].lat && marker.getLatLng().lng===pontosColeta[index].lon)
-                marker.openPopup();
-        });
-    }
-
-    async function excluirPonto(index){
-        if(confirm(`Deseja realmente excluir o ponto "${pontosColeta[index].nome}"?`)){
-            pontosColeta.splice(index,1);
-            atualizarMapa();
-            // Tenta atualizar no JSONBin, mas ignora erro
-            try{ await fetch(JSON_URL,{ method:"PUT", headers:{ "Content-Type":"application/json", "X-Master-Key":MASTER_KEY }, body:JSON.stringify(pontosColeta) }); }catch(e){ console.warn("Erro ao salvar no JSONBin:",e); }
+        document.getElementById('toggleLayer').onclick = function () {
+            if (camadaAtual === 'street') {map.removeLayer(streetLayer); satelliteLayer.addTo(map); camadaAtual = 'satellite';}
+            else {map.removeLayer(satelliteLayer); streetLayer.addTo(map); camadaAtual = 'street';}
         }
-    }
 
-    map.on('click',function(e){
-        document.getElementById('form-container').style.display='block';
-        marcadorAtual=e.latlng;
-    });
+        var marcadorAtual = null;
+        var markersCluster = L.markerClusterGroup();
 
-    async function adicionarMarcador(){
-        var nome=document.getElementById('nome').value;
-        if(nome && marcadorAtual){
-            pontosColeta.push({nome:nome,lat:marcadorAtual.lat,lon:marcadorAtual.lng});
-            atualizarMapa(); fecharFormulario();
-            // Tenta atualizar no JSONBin, mas ignora erro
-            try{ await fetch(JSON_URL,{ method:"PUT", headers:{ "Content-Type":"application/json", "X-Master-Key":MASTER_KEY }, body:JSON.stringify(pontosColeta) }); }catch(e){ console.warn("Erro ao salvar no JSONBin:",e); }
-        } else alert("Digite o nome do ponto!");
-    }
+        // PONTOS PRÉ-CARREGADOS DE SANTA CRUZ DA SERRA
+        var pontosColeta = [
+            {"nome": "Ponto A", "lat": -22.641560, "lon": -43.278042},
+            {"nome": "Ponto B", "lat": -22.640240, "lon": -43.275354},
+            {"nome": "Ponto C", "lat": -22.638923, "lon": -43.272392},
+            {"nome": "Ponto D", "lat": -22.646208, "lon": -43.272710}
+        ];
 
-    function fecharFormulario(){
-        document.getElementById('form-container').style.display='none';
-        document.getElementById('nome').value=""; marcadorAtual=null;
-    }
+        const BIN_ID = "689f65d4ae596e708fcad177";
+        const MASTER_KEY = "689f673443b1c97be91f1e5c";
+        const JSON_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-    var sidebar=document.getElementById('sidebar');
-    document.getElementById('toggleSidebar').onclick=function(){ sidebar.classList.toggle('active'); }
+        function atualizarMapa() {
+            markersCluster.clearLayers();
 
-    atualizarMapa();
-</script>
+            var recycleIcon = L.icon({
+                iconUrl: 'imagens/recycle_icon_28px.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+
+
+            pontosColeta.forEach(function (ponto, index) {
+                var marker = L.marker([ponto.lat, ponto.lon], {icon: recycleIcon})
+                    .bindPopup("<b>ReciclaFácil: " + ponto.nome + "</b>");
+                markersCluster.addLayer(marker);
+            });
+
+            map.addLayer(markersCluster);
+            atualizarLista();
+        }
+
+        function atualizarLista() {
+            var ul = document.getElementById('ul-pontos'); ul.innerHTML = '';
+            pontosColeta.forEach(function (ponto, index) {
+                var li = document.createElement('li');
+                li.innerHTML = `<span onclick="zoomParaPonto(${index})">${ponto.nome}</span>
+                          <span class="excluir" onclick="excluirPonto(${index})">✖</span>`;
+                ul.appendChild(li);
+            });
+        }
+
+        function zoomParaPonto(index) {
+            map.setView([pontosColeta[index].lat, pontosColeta[index].lon], 18);
+            markersCluster.eachLayer(function (marker) {
+                if (marker.getLatLng().lat === pontosColeta[index].lat && marker.getLatLng().lng === pontosColeta[index].lon)
+                    marker.openPopup();
+            });
+        }
+
+        async function excluirPonto(index) {
+            if (confirm(`Deseja realmente excluir o ponto "${pontosColeta[index].nome}"?`)) {
+                pontosColeta.splice(index, 1);
+                atualizarMapa();
+                // Tenta atualizar no JSONBin, mas ignora erro
+                try {await fetch(JSON_URL, {method: "PUT", headers: {"Content-Type": "application/json", "X-Master-Key": MASTER_KEY}, body: JSON.stringify(pontosColeta)});} catch (e) {console.warn("Erro ao salvar no JSONBin:", e);}
+            }
+        }
+
+        map.on('click', function (e) {
+            document.getElementById('form-container').style.display = 'block';
+            marcadorAtual = e.latlng;
+        });
+
+        async function adicionarMarcador() {
+            var nome = document.getElementById('nome').value;
+            if (nome && marcadorAtual) {
+                pontosColeta.push({nome: nome, lat: marcadorAtual.lat, lon: marcadorAtual.lng});
+                atualizarMapa(); fecharFormulario();
+                // Tenta atualizar no JSONBin, mas ignora erro
+                try {await fetch(JSON_URL, {method: "PUT", headers: {"Content-Type": "application/json", "X-Master-Key": MASTER_KEY}, body: JSON.stringify(pontosColeta)});} catch (e) {console.warn("Erro ao salvar no JSONBin:", e);}
+            } else alert("Digite o nome do ponto!");
+        }
+
+        function fecharFormulario() {
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('nome').value = ""; marcadorAtual = null;
+        }
+
+        var sidebar = document.getElementById('sidebar');
+        document.getElementById('toggleSidebar').onclick = function () {sidebar.classList.toggle('active');}
+
+        atualizarMapa();
+    </script>
 
 </body>
+
 </html>
