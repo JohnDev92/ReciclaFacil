@@ -37,14 +37,15 @@ args = "Web Server"
 [[workflows.workflow]]
 name = "Web Server"
 author = "agent"
+mode = "sequential"
+
+[workflows.workflow.metadata]
+outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python3 -m http.server 5000"
 waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[ports]]
 localPort = 80
@@ -55,7 +56,7 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 43157
+localPort = 42853
 externalPort = 3000
 
 [agent]
