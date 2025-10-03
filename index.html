@@ -189,6 +189,128 @@
                 width: 55%;
             }
         }
+
+        .btn-education {
+            background: #FF9800;
+            color: white;
+        }
+
+        .btn-education:hover {
+            background: #F57C00;
+        }
+
+        .btn-stats {
+            background: #9C27B0;
+            color: white;
+        }
+
+        .btn-stats:hover {
+            background: #7B1FA2;
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        #modal-content {
+            position: relative;
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        #modal-close:hover {
+            color: #000;
+        }
+
+        .education-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #stats-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 2001;
+            min-width: 400px;
+        }
+
+        #stats-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .stat-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f5f5f5;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .stat-item h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .stat-item p {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        @media(max-width:768px) {
+            #modal-content {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            #stats-panel {
+                min-width: 300px;
+                max-width: 90%;
+            }
+        }
     </style>
 </head>
 
@@ -220,10 +342,47 @@
                 </a>
             </div>
             <div id="map-controls">
+                <button id="btnEducation" class="btn-control btn-education">📚 Conteúdo Educativo</button>
                 <button id="toggleLayer" class="btn-control">🗺️ Alternar Camada</button>
                 <button id="toggleSidebar" class="btn-control">📍 Pontos</button>
+                <button id="btnStats" class="btn-control btn-stats" style="display:none;">📊 Estatísticas</button>
             </div>
         </div>
+    </div>
+
+    <div id="modal-overlay">
+        <div id="modal-content">
+            <button id="modal-close">&times;</button>
+            <h2 style="margin-top:0; color:#333;">📚 Conteúdo Educativo sobre Reciclagem</h2>
+            <p style="color:#666; margin-bottom:20px;">Aprenda mais sobre como separar e reciclar corretamente seus resíduos.</p>
+            <div id="education-images">
+                <img src="imagens/educativo1.jpg" alt="Conteúdo Educativo 1" class="education-image" onerror="this.style.display='none'">
+                <img src="imagens/educativo2.jpg" alt="Conteúdo Educativo 2" class="education-image" onerror="this.style.display='none'">
+                <img src="imagens/educativo3.jpg" alt="Conteúdo Educativo 3" class="education-image" onerror="this.style.display='none'">
+            </div>
+            <p style="color:#999; font-size:12px; margin-top:30px;">
+                <strong>Nota:</strong> Para adicionar suas próprias imagens educativas, coloque os arquivos na pasta <code>imagens/</code> 
+                com os nomes educativo1.jpg, educativo2.jpg, educativo3.jpg, etc.
+            </p>
+        </div>
+    </div>
+
+    <div id="stats-overlay"></div>
+    <div id="stats-panel">
+        <h2 style="margin-top:0; color:#333;">📊 Estatísticas do ReciclaFácil</h2>
+        <div class="stat-item">
+            <h4>👥 Total de Acessos</h4>
+            <p id="stat-visits">0</p>
+        </div>
+        <div class="stat-item" style="border-left-color:#25D366;">
+            <h4>💬 Cliques no WhatsApp</h4>
+            <p id="stat-whatsapp" style="color:#25D366;">0</p>
+        </div>
+        <div class="stat-item" style="border-left-color:#2196F3;">
+            <h4>📞 Cliques no Telefone</h4>
+            <p id="stat-phone" style="color:#2196F3;">0</p>
+        </div>
+        <button onclick="closeStats()" style="margin-top:20px; padding:10px 20px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer; width:100%;">Fechar</button>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -334,6 +493,85 @@
         document.getElementById('toggleSidebar').onclick = function () {sidebar.classList.toggle('active');}
 
         atualizarMapa();
+
+        // ===== SISTEMA DE ANALYTICS =====
+        function getStats() {
+            return {
+                visits: parseInt(localStorage.getItem('recicla_visits') || '0'),
+                whatsappClicks: parseInt(localStorage.getItem('recicla_whatsapp_clicks') || '0'),
+                phoneClicks: parseInt(localStorage.getItem('recicla_phone_clicks') || '0')
+            };
+        }
+
+        function incrementStat(key) {
+            const currentValue = parseInt(localStorage.getItem(key) || '0');
+            localStorage.setItem(key, currentValue + 1);
+        }
+
+        // Registrar visita
+        incrementStat('recicla_visits');
+
+        // Rastrear cliques no WhatsApp
+        document.querySelector('.btn-whatsapp').addEventListener('click', function() {
+            incrementStat('recicla_whatsapp_clicks');
+        });
+
+        // Rastrear cliques no Telefone
+        document.querySelector('.btn-phone').addEventListener('click', function() {
+            incrementStat('recicla_phone_clicks');
+        });
+
+        // ===== MODAL DE CONTEÚDO EDUCATIVO =====
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalClose = document.getElementById('modal-close');
+        const btnEducation = document.getElementById('btnEducation');
+
+        btnEducation.onclick = function() {
+            modalOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        modalClose.onclick = function() {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        modalOverlay.onclick = function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // ===== PAINEL DE ESTATÍSTICAS (ADMIN) =====
+        const statsPanel = document.getElementById('stats-panel');
+        const statsOverlay = document.getElementById('stats-overlay');
+        const btnStats = document.getElementById('btnStats');
+
+        // Atalho para ativar botão de estatísticas: pressione Ctrl+Shift+S
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+                e.preventDefault();
+                btnStats.style.display = btnStats.style.display === 'none' ? 'inline-block' : 'none';
+            }
+        });
+
+        btnStats.onclick = function() {
+            const stats = getStats();
+            document.getElementById('stat-visits').textContent = stats.visits;
+            document.getElementById('stat-whatsapp').textContent = stats.whatsappClicks;
+            document.getElementById('stat-phone').textContent = stats.phoneClicks;
+            
+            statsPanel.style.display = 'block';
+            statsOverlay.style.display = 'block';
+        }
+
+        function closeStats() {
+            statsPanel.style.display = 'none';
+            statsOverlay.style.display = 'none';
+        }
+
+        statsOverlay.onclick = closeStats;
     </script>
 
 </body>
