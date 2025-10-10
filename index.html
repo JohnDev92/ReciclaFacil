@@ -335,7 +335,9 @@
             <div id="contact-buttons">
                 <a href="https://wa.me/5521990191331" target="_blank" class="btn-contact btn-whatsapp"
                     aria-label="WhatsApp Jogue Limpo/Disk Entulho">
-                    <img src="imagens/whatsapp_icon.png" alt="WhatsApp" style="width:20px; height:20px; vertical-align:middle; margin-right:6px;"> WhatsApp - Jogue Limpo/Disk Entulho
+                    <img src="imagens/whatsapp_icon.png" alt="WhatsApp"
+                        style="width:20px; height:20px; vertical-align:middle; margin-right:6px;"> WhatsApp - Jogue
+                    Limpo/Disk Entulho
                 </a>
                 <a href="tel:+552139001651" class="btn-contact btn-phone" aria-label="Ligue para Prefeitura">
                     📞 Ligue para Prefeitura (seg-sex 8h-17h)
@@ -354,16 +356,21 @@
         <div id="modal-content">
             <button id="modal-close">&times;</button>
             <h2 style="margin-top:0; color:#333;">📚 Conteúdo Educativo sobre Reciclagem</h2>
-            <p style="color:#666; margin-bottom:20px;">Aprenda mais sobre como separar e reciclar corretamente seus resíduos.</p>
+            <p style="color:#666; margin-bottom:20px;">Aprenda mais sobre como separar e reciclar corretamente seus
+                resíduos.</p>
             <div id="education-images">
-                <img src="imagens/educativo1.jpg" alt="Conteúdo Educativo 1" class="education-image" onerror="this.style.display='none'">
-                <img src="imagens/educativo2.jpg" alt="Conteúdo Educativo 2" class="education-image" onerror="this.style.display='none'">
-                <img src="imagens/educativo3.jpg" alt="Conteúdo Educativo 3" class="education-image" onerror="this.style.display='none'">
-                <img src="imagens/educativo4.jpg" alt="Conteúdo Educativo 4" class="education-image" onerror="this.style.display='none'">
+                <img src="imagens/educativo1.jpg" alt="Conteúdo Educativo 1" class="education-image"
+                    onerror="this.style.display='none'">
+                <img src="imagens/educativo2.jpg" alt="Conteúdo Educativo 2" class="education-image"
+                    onerror="this.style.display='none'">
+                <img src="imagens/educativo3.jpg" alt="Conteúdo Educativo 3" class="education-image"
+                    onerror="this.style.display='none'">
+                <img src="imagens/educativo4.jpg" alt="Conteúdo Educativo 4" class="education-image"
+                    onerror="this.style.display='none'">
             </div>
             <p style="color:#999; font-size:12px; margin-top:30px;">
-                 
-                
+
+
             </p>
         </div>
     </div>
@@ -383,7 +390,8 @@
             <h4>📞 Cliques no Telefone</h4>
             <p id="stat-phone" style="color:#2196F3;">0</p>
         </div>
-        <button onclick="closeStats()" style="margin-top:20px; padding:10px 20px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer; width:100%;">Fechar</button>
+        <button onclick="closeStats()"
+            style="margin-top:20px; padding:10px 20px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer; width:100%;">Fechar</button>
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -513,12 +521,12 @@
         incrementStat('recicla_visits');
 
         // Rastrear cliques no WhatsApp
-        document.querySelector('.btn-whatsapp').addEventListener('click', function() {
+        document.querySelector('.btn-whatsapp').addEventListener('click', function () {
             incrementStat('recicla_whatsapp_clicks');
         });
 
         // Rastrear cliques no Telefone
-        document.querySelector('.btn-phone').addEventListener('click', function() {
+        document.querySelector('.btn-phone').addEventListener('click', function () {
             incrementStat('recicla_phone_clicks');
         });
 
@@ -527,17 +535,17 @@
         const modalClose = document.getElementById('modal-close');
         const btnEducation = document.getElementById('btnEducation');
 
-        btnEducation.onclick = function() {
+        btnEducation.onclick = function () {
             modalOverlay.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        modalClose.onclick = function() {
+        modalClose.onclick = function () {
             modalOverlay.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        modalOverlay.onclick = function(e) {
+        modalOverlay.onclick = function (e) {
             if (e.target === modalOverlay) {
                 modalOverlay.style.display = 'none';
                 document.body.style.overflow = 'auto';
@@ -550,19 +558,19 @@
         const btnStats = document.getElementById('btnStats');
 
         // Atalho para ativar botão de estatísticas: pressione Ctrl+Shift+S
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.ctrlKey && e.shiftKey && e.key === 'S') {
                 e.preventDefault();
                 btnStats.style.display = btnStats.style.display === 'none' ? 'inline-block' : 'none';
             }
         });
 
-        btnStats.onclick = function() {
+        btnStats.onclick = function () {
             const stats = getStats();
             document.getElementById('stat-visits').textContent = stats.visits;
             document.getElementById('stat-whatsapp').textContent = stats.whatsappClicks;
             document.getElementById('stat-phone').textContent = stats.phoneClicks;
-            
+
             statsPanel.style.display = 'block';
             statsOverlay.style.display = 'block';
         }
