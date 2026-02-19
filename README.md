@@ -8,7 +8,7 @@ A aplicação foi construída como uma aplicação web leve, do lado do cliente,
 
 ## 🚀 Como Começar
 
-1. Abra o arquivo `index.html` no seu navegador
+1. Abra o arquivo `index.html` no seu navegador ou clique em https://johndev92.github.io/ReciclaFacil/
 2. Explore o mapa interativo e visualize os pontos de reciclagem disponíveis
 3. Use o formulário para adicionar novos pontos de coleta
 4. Gerenciede locais existentes através do painel lateral
